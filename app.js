@@ -9,6 +9,8 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
+app.options("*", cors());
+
 app.get("/notes", async (_, res) => {
     try {
         const notes = await Note.find({});
