@@ -1,10 +1,12 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const cors = require("cors");
 
 const { Note } = require("./database");
 
 const app = express();
 
+app.use(cors());
 app.use(bodyParser.json());
 
 app.get("/notes", async (_, res) => {
