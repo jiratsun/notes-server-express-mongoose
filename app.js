@@ -13,7 +13,7 @@ app.options("*", cors());
 
 app.get("/notes", async (_, res) => {
     try {
-        const notes = await Note.find({});
+        const notes = await Note.find({}).sort({ date: -1 });
         res.json(notes);
     } catch (error) {
         res.json(error.message);
