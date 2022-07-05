@@ -13,7 +13,7 @@ app.options("*", cors());
 
 app.get("/notes", async (_, res) => {
     try {
-        const notes = await Note.find({}).sort({ date: -1 });
+        const notes = await Note.find({}).sort({ datetime: -1 });
         res.json(notes);
     } catch (error) {
         res.json(error.message);
@@ -62,6 +62,7 @@ function createNote(req, _, next) {
         status: status,
         isFavorite: isFavorite,
         isCurrent: isCurrent,
+        datetime: new Date(),
     };
     next();
 }

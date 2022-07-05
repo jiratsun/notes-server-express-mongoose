@@ -12,7 +12,7 @@ const noteSchema = new mongoose.Schema(
         status: { type: String, required: [true, "status required"] },
         isFavorite: { type: Boolean, required: [true, "isFavorite required"] },
         isCurrent: { type: Boolean, default: false },
-        date: { type: Date, default: new Date() },
+        datetime: { type: Date, required: [true, "date required"] },
     },
     { versionKey: false }
 );
