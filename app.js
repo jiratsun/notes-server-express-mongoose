@@ -23,7 +23,7 @@ app.get("/notes", async (_, res) => {
 app.post("/notes", createNote, async (req, res) => {
     const { note } = req;
     try {
-        const doc = new Note(note);
+        const doc = new Note({ ...note, datetime: new Date() });
         await doc.save();
         res.json(doc);
     } catch (error) {
@@ -62,7 +62,6 @@ function createNote(req, _, next) {
         status: status,
         isFavorite: isFavorite,
         isCurrent: isCurrent,
-        datetime: new Date(),
     };
     next();
 }
