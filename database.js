@@ -13,6 +13,7 @@ const noteSchema = new mongoose.Schema(
         isFavorite: { type: Boolean, required: [true, "isFavorite required"] },
         isCurrent: { type: Boolean, default: false },
         datetime: { type: Date, required: [true, "date required"] },
+        currentComment: { type: String, default: "" },
     },
     { versionKey: false }
 );
