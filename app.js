@@ -55,13 +55,23 @@ app.delete("/notes/:id", async (req, res) => {
 });
 
 function createNote(req, _, next) {
-    const { content, comment, status, isFavorite, isCurrent } = req.body;
+    const {
+        content,
+        comment,
+        status,
+        isFavorite,
+        isCurrent,
+        datetime,
+        currentComment,
+    } = req.body;
     req.note = {
         content: content,
         comment: comment,
         status: status,
         isFavorite: isFavorite,
         isCurrent: isCurrent,
+        datetime: datetime,
+        currentComment: currentComment,
     };
     next();
 }
