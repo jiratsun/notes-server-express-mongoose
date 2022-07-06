@@ -2,7 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 
-const { Note } = require("./database");
+const { getModel } = require("./database");
 
 const app = express();
 
@@ -11,19 +11,22 @@ app.use(bodyParser.json());
 
 app.options("*", cors());
 
+app.use(setCollection);
+
 app.get("/notes", async (_, res) => {
+    const { NoteModel } = res.locals;
     try {
-        const notes = await Note.find({}).sort({ datetime: -1 });
+        const notes = await NoteModel.find({}).sort({ datetime: -1 });
         res.json(notes);
     } catch (error) {
         res.json(error.message);
     }
 });
 
-app.post("/notes", createNote, async (req, res) => {
-    const { note } = req.locals;
+app.post("/notes", createNote, async (_, res) => {
+    const { note, NoteModel } = res.locals;
     try {
-        const doc = new Note({ ...note, datetime: new Date() });
+        const doc = new NoteModel({ ...note, datetime: new Date() });
         await doc.save();
         res.json(doc);
     } catch (error) {
@@ -32,10 +35,10 @@ app.post("/notes", createNote, async (req, res) => {
 });
 
 app.patch("/notes/:id", createNote, async (req, res) => {
-    const { note } = req.locals;
+    const { note, NoteModel } = res.locals;
     const { id } = req.params;
     try {
-        const doc = await Note.findOneAndUpdate({ _id: id }, note, {
+        const doc = await NoteModel.findOneAndUpdate({ _id: id }, note, {
             new: true,
         });
         res.json(doc);
@@ -45,16 +48,17 @@ app.patch("/notes/:id", createNote, async (req, res) => {
 });
 
 app.delete("/notes/:id", async (req, res) => {
+    const { NoteModel } = res.locals;
     const { id } = req.params;
     try {
-        await Note.deleteOne({ _id: id });
+        await NoteModel.deleteOne({ _id: id });
         res.end();
     } catch (error) {
         res.json(error.message);
     }
 });
 
-function createNote(req, _, next) {
+function createNote(req, res, next) {
     const {
         content,
         comment,
@@ -64,7 +68,7 @@ function createNote(req, _, next) {
         datetime,
         currentComment,
     } = req.body;
-    req.locals.note = {
+    res.locals.note = {
         content: content,
         comment: comment,
         status: status,
@@ -73,6 +77,12 @@ function createNote(req, _, next) {
         datetime: datetime,
         currentComment: currentComment,
     };
+    next();
+}
+
+function setCollection(req, res, next) {
+    const { collection } = req.query;
+    res.locals.NoteModel = getModel(collection);
     next();
 }
 

@@ -20,4 +20,5 @@ const noteSchema = new mongoose.Schema(
 
 noteSchema.set("toJSON", { virtuals: true });
 
-module.exports.Note = mongoose.model("Note", noteSchema);
+exports.getModel = (collection) =>
+    mongoose.model("Note", noteSchema, collection);
