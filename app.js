@@ -2,7 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 
-const { getModel, getCollection } = require("./database");
+const { getModel, getCollection, createCollection } = require("./database");
 
 const app = express();
 
@@ -16,6 +16,16 @@ app.get("/books", async (_, res) => {
         const collections = await getCollection();
         const books = collections.map((collection) => collection.name);
         res.json(books);
+    } catch (error) {
+        res.json(error.message);
+    }
+});
+
+app.post("/books", async (req, res) => {
+    const { name } = req.body;
+    try {
+        await createCollection(name);
+        res.end();
     } catch (error) {
         res.json(error.message);
     }

@@ -24,3 +24,5 @@ exports.getModel = (collection) =>
     mongoose.model("Note", noteSchema, collection);
 
 exports.getCollection = () => mongoose.connection.db.listCollections().toArray();
+
+exports.createCollection = (name) => mongoose.connection.createCollection(name);
