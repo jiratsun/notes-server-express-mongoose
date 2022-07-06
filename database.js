@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 mongoose.connect(
-    "mongodb+srv://jiratsun:K0MWR6xDdRZtHUFi@note-server.ahdlvjc.mongodb.net/H-Note?retryWrites=true&w=majority",
+    "mongodb+srv://jiratsun:K0MWR6xDdRZtHUFi@note-server.ahdlvjc.mongodb.net/Notes?retryWrites=true&w=majority",
     { useNewUrlParser: true }
 );
 
