@@ -2,7 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 
-const { getModel } = require("./database");
+const { getModel, getCollection } = require("./database");
 
 const app = express();
 
@@ -10,6 +10,16 @@ app.use(cors());
 app.use(bodyParser.json());
 
 app.options("*", cors());
+
+app.get("/books", async (_, res) => {
+    try {
+        const collections = await getCollection();
+        const books = collections.map((collection) => collection.name);
+        res.json(books);
+    } catch (error) {
+        res.json(error.message);
+    }
+});
 
 app.use(setCollection);
 

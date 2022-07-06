@@ -22,3 +22,5 @@ noteSchema.set("toJSON", { virtuals: true });
 
 exports.getModel = (collection) =>
     mongoose.model("Note", noteSchema, collection);
+
+exports.getCollection = () => mongoose.connection.db.listCollections().toArray();
