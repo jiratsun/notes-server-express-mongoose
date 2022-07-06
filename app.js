@@ -21,7 +21,7 @@ app.get("/notes", async (_, res) => {
 });
 
 app.post("/notes", createNote, async (req, res) => {
-    const { note } = req;
+    const { note } = req.locals;
     try {
         const doc = new Note({ ...note, datetime: new Date() });
         await doc.save();
@@ -32,7 +32,7 @@ app.post("/notes", createNote, async (req, res) => {
 });
 
 app.patch("/notes/:id", createNote, async (req, res) => {
-    const { note } = req;
+    const { note } = req.locals;
     const { id } = req.params;
     try {
         const doc = await Note.findOneAndUpdate({ _id: id }, note, {
@@ -64,7 +64,7 @@ function createNote(req, _, next) {
         datetime,
         currentComment,
     } = req.body;
-    req.note = {
+    req.locals.note = {
         content: content,
         comment: comment,
         status: status,
