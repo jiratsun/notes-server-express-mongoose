@@ -26,3 +26,5 @@ exports.getModel = (collection) =>
 exports.getCollection = () => mongoose.connection.db.listCollections().toArray();
 
 exports.createCollection = (name) => mongoose.connection.createCollection(name);
+
+exports.deleteCollection = (name) => mongoose.connection.db.dropCollection(name);

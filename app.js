@@ -2,7 +2,12 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 
-const { getModel, getCollection, createCollection } = require("./database");
+const {
+    getModel,
+    getCollection,
+    createCollection,
+    deleteCollection,
+} = require("./database");
 
 const app = express();
 
@@ -25,6 +30,16 @@ app.post("/books", async (req, res) => {
     const { name } = req.body;
     try {
         await createCollection(name);
+        res.end();
+    } catch (error) {
+        res.json(error.message);
+    }
+});
+
+app.delete("/books/:name", async (req, res) => {
+    const { name } = req.params;
+    try {
+        await deleteCollection(name);
         res.end();
     } catch (error) {
         res.json(error.message);
